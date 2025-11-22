@@ -94,17 +94,30 @@ size_t	check_next_line(t_list *node);
 	return(flag * i);
 }
 
-char	*from_list_to_str(t_list *head, t_list *create)
+char	*from_list_to_str(t_list *head, t_list *create, char * cursor)
 {
 	char	*str;
 	char	*rest;
 	size_t	i;
+	t_list	current_lst;
 
 	str = malloc(size_of_list(head,create) + 1);
 	if (!str)
 		return (NULL);
+	while(current_list)
+	{
+		i = 0;
+		while (current_list->data[i])
+		{
+			*str = current_list->data[i];
+			str++;
+			i++;
+		}
+		current_list = current->next;
+	}
+	
+	return (str);
 }
-
 
 
 

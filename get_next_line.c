@@ -14,6 +14,19 @@
 #include <stdio.h>
 
 
+char	*from_list_to_str_suite(t_list *head, t_list *create, char * cursor)
+{
+	size_t	check;
+	size_t	i;
+
+	check = check_next_line(create);
+	while (i < check)
+	{
+		create->data[i] 
+		i++;
+	}
+	
+}
 
 char	*get_next_line(int fd)
 {
