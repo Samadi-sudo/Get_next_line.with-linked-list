@@ -29,9 +29,13 @@ typedef struct s_list
 	char			*data;
 }					t_list;
 
+//get_next_line
 char				*get_next_line(int fd);
 
 // utils
-t_list				*ft_lstnew(char *cursor, ssize_t state);
+
+//get_next_line_bonus
+
+//utils_bonus
 
 #endif

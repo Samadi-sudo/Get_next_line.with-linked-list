@@ -14,41 +14,87 @@
 #include <stdio.h>
 
 
-char	*from_list_to_str_suite(t_list *head, t_list *create, char * cursor)
-{
-	size_t	check;
-	size_t	i;
 
-	check = check_next_line(create);
-	while (i < check)
+static 
+
+static void remplir(char *str, t_list *head, char *rest, t_list *create)
+{
+	size_t	j;
+	t_lst	*curr_lst;
+
+	i = 0;
+	curr_lst = head;
+	while (curr_lst)
 	{
-		create->data[i] 
-		i++;
+		j = 0;
+		while(head->data[j])
+		{
+			*str = head->data[j]
+			j++;
+		}
+		curr_lst = curr_lst->next;
+	}
+	j = create->len - check;
+	while (rest[j])
+	{
+		*str = rest[j]
+		str++;
+		j++;
+	}
+	*str = '\0';
+}
+	
+static	char *lst_to_str(char *rest, t_list *head, t_list *create, size_t check)
+{
+	size_t	len_lst;
+	size_t	len_rest;
+	char	*str;
+
+	len_lst = ft_len_lst(rest, head, create, check);
+	str = malloc(len_lst + 1);
+	if (!str)
+		return (NULL);
+	remplir(str, head,  rest, create);
+}
+
+char	*do_the_work(char *rest, char *buff, size_t state)
+{
+	char	*str;
+	t_list	*create;
+	t_list	*head;
+	size_t	check;
+
+	head = NULL;
+	create = new_lst(buff, state);
+	check  = check_new_line(create);
+	while (!check)
+	{
+		add_lst_back(&head, new);
+		create = new_lst(buff, state);
+		check  = check_new_line(create);
 	}
 	
+	return (str);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*cursor;
-	size_t	i;
-	t_list	*create;
-	t_list	*head;
+	static char	*rest;
+	char	*buff;
+	size_t	state;
 
-	i = 0;
-	head = NULL;
-	if (!cursor)
-		cursor = malloc(BUFFER_SIZE + 1);
-	if (!cursor && BUFFER_SIZE <= 0)
+	if (!buff)
+		buff = malloc(BUFFER_SIZE + 1);
+	if (!buff && BUFFER_SIZE <= 0)
 		return (NULL);
-	state = read(fd, cursor, BUFFER_SIZE);
-	if (state <= 0)
-		return (free(cursor), NULL);
-	create = ft_lstnew(cusor, state);
-	if (!head && create != NULL)
-		head = create;
+	state = read(fd, buff, BUFFER_SIZE);
+	if(state <= 0)
+		return (free(buff), NULL);
 	else
-		
+	{
+		do_the_work(rest, buff, state);
+	}
+	return(free(buff), free(rest), NULL)
 }
 
 int	main(void)

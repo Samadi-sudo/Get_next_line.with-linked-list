@@ -12,7 +12,15 @@
 
 #include "get_next_line.h"
 
-t_list	*ft_lstnew(char *cursor, ssize_t state)
+size_t	ft_strlen(char *str)
+{
+	size_t	len;
+	while (str[len])
+		len++;
+	return (len);
+}
+
+t_list	*new_lst(char *buff, size_t state)
 {
 	t_list	*new;
 	size_t	i;
@@ -22,14 +30,11 @@ t_list	*ft_lstnew(char *cursor, ssize_t state)
 	if (!new)
 		return (NULL);
 	new->data = malloc(state + 1);
-	if (!(new->data))
-	{
-		free(new);
-		return (NULL);
-	}
+	if (!new->data)
+		return (free(new), NULL);
 	while (i < state)
 	{
-		new->data[i] = cursor[i];
+		new->data[i] = buff[i];
 		i++;
 	}
 	new->data[state] = '\0';
@@ -38,90 +43,56 @@ t_list	*ft_lstnew(char *cursor, ssize_t state)
 	return (new);
 }
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	add_lst_back(t_list **head, t_list *new)
 {
-	t_list	*cur_lst;
+	t_list *current;
 
-	if (!lst || !new)
+	if (!head || !new)
 		return ;
-	if (!*lst)
+	if (!*head)
 	{
-		*lst = new;
+		*head = new;
 		return ;
 	}
-	cur_lst = *lst;
-	while (cur_lst->next)
-		cur_lst = cur_lst->next;
-	cur_lst->next = new;
+	current = *head;
+	while (current->next != NULL)
+		current = current->next;
+	current->next = new;
 }
 
-size_t	size_of_list(t_list *head, t_list *create)
-{
-	size_t	len;
-	size_t	i;
-	size_t	check;
-	t_list	curr_list;
-
-	len = 0;
-	curr_list = head;
-	while(curr_list)
-	{
-		len += curr_list->len;
-		curr_list = curr_list->next;
-	}
-	check = check_next_line(create);
-	if (check)
-		len += check;
-	return (len);
-}
-
-size_t	check_next_line(t_list *node);
+size_t	check_new_line(t_list *new)
 {
 	size_t	i;
 	int	flag;
 
 	i = 0;
 	flag = 0;
-	while(node->data[i])
+	while (new->data[i])
 	{
-		if (node->data[i] == '\n')
+		if (new->data[i] == '\n')
 		{
 			flag = 1;
 			break;
 		}
 		i++;
 	}
-	return(flag * i);
+	return (flag * i); 
 }
 
-char	*from_list_to_str(t_list *head, t_list *create, char * cursor)
+size_t	ft_len_lst(char *rest, t_list *head, t_list *create,size_t check)
 {
-	char	*str;
-	char	*rest;
-	size_t	i;
-	t_list	current_lst;
+	size_t	len;
+	t_list *cur_lst;
 
-	str = malloc(size_of_list(head,create) + 1);
-	if (!str)
-		return (NULL);
-	while(current_list)
-	{
-		i = 0;
-		while (current_list->data[i])
-		{
-			*str = current_list->data[i];
-			str++;
-			i++;
-		}
-		current_list = current->next;
-	}
-	
-	return (str);
+	len = 0;
+	if (!head)
+		return (0);
+	if (rest != NULL)
+		len += ft_strlen(rest);
+	while (cur_lst)
+		len += cur_lst->len;
+	if (check)
+		len += check;
+	return (len);
 }
-
-
-
-
-
-
 
