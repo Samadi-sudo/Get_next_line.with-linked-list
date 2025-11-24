@@ -15,6 +15,8 @@
 size_t	ft_strlen(char *str)
 {
 	size_t	len;
+
+	len = 0;
 	while (str[len])
 		len++;
 	return (len);
@@ -63,20 +65,15 @@ void	add_lst_back(t_list **head, t_list *new)
 size_t	check_new_line(t_list *new)
 {
 	size_t	i;
-	int	flag;
 
 	i = 0;
-	flag = 0;
-	while (new->data[i])
+	while (i < new->len)
 	{
 		if (new->data[i] == '\n')
-		{
-			flag = 1;
-			break;
-		}
+			return (i + 1);
 		i++;
 	}
-	return (flag * i); 
+	return (0); 
 }
 
 size_t	ft_len_lst(char *rest, t_list *head, t_list *create,size_t check)
@@ -85,14 +82,17 @@ size_t	ft_len_lst(char *rest, t_list *head, t_list *create,size_t check)
 	t_list *cur_lst;
 
 	len = 0;
+	cur_lst = head;
 	if (!head)
 		return (0);
 	if (rest != NULL)
 		len += ft_strlen(rest);
 	while (cur_lst)
+	{
 		len += cur_lst->len;
-	if (check)
-		len += check;
+		cur_lst = cur_lst->next;
+	}
+	len += check;
 	return (len);
 }
 
