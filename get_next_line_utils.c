@@ -12,82 +12,59 @@
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(char *str)
+size_t	gnl_strlen(const char *s)
 {
-	size_t	len;
+	size_t	i;
 
-	if (!str)
+	if (!s)
 		return (0);
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
 
-char	*ft_strchr(const char *s, int c)
+int	gnl_strchr(const char *s, int c)
 {
-	unsigned char	uc;
-	size_t			i;
-	char			*first;
+	int	i;
 
 	if (!s)
-		return (NULL);
+		return (0);
 	i = 0;
-	first = (char *)s;
-	uc = (unsigned char)c;
-	while (first[i] && first[i] != uc)
-		i++;
-	if (first[i] == uc)
-		return (&first[i]);
-	return (NULL);
-}
-
-char	*ft_strjoin(char *buff, char *saved)
-{
-	size_t	i;
-	char *str;
-
-	if (!buff || !saved)
-		return (NULL);
-	str = malloc(ft_strlen(buff) + ft_strlen(saved) + 1);
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (buff[i])
-	{
-		str[i] = buff[i]; 
-		i++;
-	}
-	while (saved)
-	{
-		str[i] = *saved;
-		i++;
-		saved++;
-	}
-	str[i] = '\0';
-	return (str);
-}
-
-char	*ft_strdup(const char *s)
-{
-	size_t	len;
-	size_t	i;
-	char	*copy;
-
-	len = 0;
-	i = 0;
-	if (!s)
-		return (NULL);
-	while (s[len])
-		len++;
-	copy = malloc((len + 1) * sizeof(char));
-	if (!copy)
-		return (NULL);
 	while (s[i])
 	{
-		copy[i] = s[i];
+		if (s[i] == (char)c)
+			return (1);
 		i++;
 	}
-	copy[i] = '\0';
-	return (copy);
+	return (0);
+}
+
+char	*gnl_strjoin(char *s1, char *s2)
+{
+	char	*res;
+	size_t	i;
+	size_t	j;
+	size_t	len1;
+	size_t	len2;
+
+	len1 = gnl_strlen(s1);
+	len2 = gnl_strlen(s2);
+	if (!len1 && !len2)
+		return (NULL);
+	res = malloc(len1 + len2 + 1);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (s1 && s1[i])
+	{
+		res[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2 && s2[j])
+		res[i++] = s2[j++];
+	res[i] = '\0';
+	free(s1);
+	return (res);
 }
