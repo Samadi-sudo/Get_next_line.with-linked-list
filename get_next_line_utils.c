@@ -16,83 +16,78 @@ size_t	ft_strlen(char *str)
 {
 	size_t	len;
 
+	if (!str)
+		return (0);
 	len = 0;
 	while (str[len])
 		len++;
 	return (len);
 }
 
-t_list	*new_lst(char *buff, size_t state)
+char	*ft_strchr(const char *s, int c)
 {
-	t_list	*new;
-	size_t	i;
+	unsigned char	uc;
+	size_t			i;
+	char			*first;
 
-	i = 0;
-	new = malloc(sizeof(t_list));
-	if (!new)
+	if (!s)
 		return (NULL);
-	new->data = malloc(state + 1);
-	if (!new->data)
-		return (free(new), NULL);
-	while (i < state)
-	{
-		new->data[i] = buff[i];
+	i = 0;
+	first = (char *)s;
+	uc = (unsigned char)c;
+	while (first[i] && first[i] != uc)
 		i++;
-	}
-	new->data[state] = '\0';
-	new->len = state;
-	new->next = NULL;
-	return (new);
+	if (first[i] == uc)
+		return (&first[i]);
+	return (NULL);
 }
 
-void	add_lst_back(t_list **head, t_list *new)
-{
-	t_list *current;
-
-	if (!head || !new)
-		return ;
-	if (!*head)
-	{
-		*head = new;
-		return ;
-	}
-	current = *head;
-	while (current->next != NULL)
-		current = current->next;
-	current->next = new;
-}
-
-size_t	check_new_line(t_list *new)
+char	*ft_strjoin(char *buff, char *saved)
 {
 	size_t	i;
+	char *str;
 
+	if (!buff || !saved)
+		return (NULL);
+	str = malloc(ft_strlen(buff); + ft_strlen(saved); + 1);
+	if (!str)
+		return (NULL);
 	i = 0;
-	while (i < new->len)
+	while (buff[i])
 	{
-		if (new->data[i] == '\n')
-			return (i + 1);
+		str[i] = buff[i]; 
 		i++;
 	}
-	return (0); 
+	while (saved)
+	{
+		str[i] = *saved;
+		i++;
+		saved++;
+	}
+	str[i] = '\0';
+	return (str);
 }
 
-size_t	ft_len_lst(char *rest, t_list *head, t_list *create,size_t check)
+char	*ft_strdup(const char *s)
 {
 	size_t	len;
-	t_list *cur_lst;
+	size_t	i;
+	char	*copy;
 
 	len = 0;
-	cur_lst = head;
-	if (!head)
-		return (0);
-	if (rest != NULL)
-		len += ft_strlen(rest);
-	while (cur_lst)
+	i = 0;
+	if (!s)
+		return (NULL);
+	while (s[len])
+		len++;
+	copy = malloc((len + 1) * sizeof(char));
+	if (!copy)
+		return (NULL);
+	while (s[i])
 	{
-		len += cur_lst->len;
-		cur_lst = cur_lst->next;
+		copy[i] = s[i];
+		i++;
 	}
-	len += check;
-	return (len);
+	copy[i] = '\0';
+	return (copy);
 }
-

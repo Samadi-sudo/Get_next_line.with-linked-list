@@ -22,23 +22,12 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-typedef struct s_list
-{
-	struct s_list	*next;
-	size_t			len;
-	char			*data;
-}					t_list;
 
 //get_next_line
 char	*get_next_line(int fd);
 
 // utils
-size_t	ft_strlen(char *s);
-char	*ft_substr(char *s, size_t start, size_t len);
-t_list	*new_lst(char *buff, size_t state);
-void	add_lst_back(t_list **head, t_list *new);
-size_t	check_new_line(t_list *node);
-size_t	ft_len_lst(char *rest, t_list *head, t_list *create, size_t check);
+size_t	ft_strlen(char *str);
 
 //get_next_line_bonus
 
