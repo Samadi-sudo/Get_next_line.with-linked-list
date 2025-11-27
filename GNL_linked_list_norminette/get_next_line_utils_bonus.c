@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abantari <abantari@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abantari <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/26 21:09:42 by abantari          #+#    #+#             */
-/*   Updated: 2025/11/26 21:09:42 by abantari         ###   ########.fr       */
+/*   Created: 2025/11/27 14:50:38 by abantari          #+#    #+#             */
+/*   Updated: 2025/11/27 14:50:39 by abantari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {

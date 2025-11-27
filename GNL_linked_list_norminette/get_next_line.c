@@ -6,7 +6,7 @@
 /*   By: abantari <abantari@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 21:10:09 by abantari          #+#    #+#             */
-/*   Updated: 2025/11/26 21:10:09 by abantari         ###   ########.fr       */
+/*   Updated: 2025/11/27 14:35:00 by abantari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static char	*read_loop(int fd, t_list **head, t_list **tail, char **stash)
 	ssize_t	index;
 
 	state = 1;
-	buff = malloc(BUFFER_SIZE + 1);
+	buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buff)
 		return (NULL);
 	index = find_nl((*tail)->data);

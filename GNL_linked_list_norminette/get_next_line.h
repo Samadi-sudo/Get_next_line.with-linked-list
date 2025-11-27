@@ -6,7 +6,7 @@
 /*   By: abantari <abantari@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 21:09:19 by abantari          #+#    #+#             */
-/*   Updated: 2025/11/26 21:09:19 by abantari         ###   ########.fr       */
+/*   Updated: 2025/11/27 14:32:56 by abantari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 # define GET_NEXT_LINE_H
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 5
+# endif
+
+# if BUFFER_SIZE < 0
+#  undef BUFFER_SIZE
+#  define BUFFER_SIZE 0
 # endif
 
 # include <stdlib.h>

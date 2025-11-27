@@ -63,9 +63,9 @@ static char	*clean_stash(char *stash)
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	char	*buffer;
-	ssize_t	bytes_read;
-	char	*line;
+	char		*buffer;
+	ssize_t		bytes_read;
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -84,7 +84,7 @@ char	*get_next_line(int fd)
 	free(buffer);
 	line = extract_line(stash);
 	if (!line)
-		return(free(stash), stash = NULL, NULL);
+		return (free(stash), stash = NULL, NULL);
 	stash = clean_stash(stash);
 	return (line);
 }

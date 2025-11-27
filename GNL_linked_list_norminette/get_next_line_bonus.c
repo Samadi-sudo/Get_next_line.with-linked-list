@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abantari <abantari@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abantari <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/26 21:10:09 by abantari          #+#    #+#             */
-/*   Updated: 2025/11/26 21:10:09 by abantari         ###   ########.fr       */
+/*   Created: 2025/11/27 14:50:21 by abantari          #+#    #+#             */
+/*   Updated: 2025/11/27 14:50:23 by abantari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static void	lst_str_ft(ssize_t index, char **stash, t_list *tail)
 {
@@ -92,7 +92,7 @@ static char	*read_loop(int fd, t_list **head, t_list **tail, char **stash)
 	ssize_t	index;
 
 	state = 1;
-	buff = malloc(BUFFER_SIZE + 1);
+	buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buff)
 		return (NULL);
 	index = find_nl((*tail)->data);
@@ -116,28 +116,28 @@ static char	*read_loop(int fd, t_list **head, t_list **tail, char **stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[OPEN_MAX];
 	t_list		*head;
 	t_list		*tail;
 	char		*line;
 
 	head = NULL;
 	tail = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= OPEN_MAX)
 		return (NULL);
-	if (stash)
+	if (stash[fd])
 	{
-		if (!lstaddback(&head, &tail, stash, ft_strlen(stash)))
-			return (free(stash), stash = NULL, NULL);
-		free(stash);
-		stash = NULL;
+		if (!lstaddback(&head, &tail, stash[fd], ft_strlen(stash[fd])))
+			return (free(stash[fd]), stash[fd] = NULL, NULL);
+		free(stash[fd]);
+		stash[fd] = NULL;
 	}
 	else
 	{
 		if (!lstaddback(&head, &tail, "", 0))
 			return (NULL);
 	}
-	line = read_loop(fd, &head, &tail, &stash);
+	line = read_loop(fd, &head, &tail, &stash[fd]);
 	lst_clear(head);
 	return (line);
 }
