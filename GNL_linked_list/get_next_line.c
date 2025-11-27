@@ -1,0 +1,177 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abantari <abantari@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/26 21:10:09 by abantari          #+#    #+#             */
+/*   Updated: 2025/11/26 21:10:09 by abantari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+static char	*lst_str_f(ssize_t index, char *line, t_list *head, t_list *tail)
+{
+	t_list	*curr_list;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	curr_list = head;
+	while (curr_list != tail)
+	{
+		j = 0;
+		while (curr_list->data[j])
+			line[i++] = curr_list->data[j++];
+		curr_list = curr_list->next;
+	}
+	j = 0;
+	if (index == -1)
+    {
+        while (j < tail->len)
+            line[i++] = tail->data[j++];
+    }
+    else
+    {
+        while (j <= index && j < tail->len)
+            line[i++] = tail->data[j++];
+    }
+	line[i] = '\0';
+	return (line);
+}
+
+static char	*lst_str(ssize_t index, char **stash, t_list *head, t_list *tail)
+{
+	char	*line;
+	t_list	*curr_lst;
+	size_t	total;
+
+	total = 0;
+	curr_lst = head;
+	while (curr_lst != tail)
+	{
+		total += curr_lst->len;
+		curr_lst = curr_lst->next;
+	}
+	if (index == -1)
+        total += tail->len;
+    else
+        total += (index + 1);
+	if (total == 0)
+    {
+        if (*stash)
+        {
+            free(*stash);
+            *stash = NULL;
+        }
+        return (NULL);
+    }
+	line = malloc(total + 1);
+	if (!line)
+    {
+        if (*stash)
+        {
+            free(*stash);
+            *stash = NULL;
+        }
+        return (NULL);
+    }
+	lst_str_f(index, line, head, tail);
+	if (index == -1)
+    {
+        if (*stash)
+        {
+            free(*stash);
+            *stash = NULL;
+        }
+    }
+    else
+    {
+        if ((size_t)(index + 1) < ft_strlen(tail->data))
+        {
+            if (*stash)
+                free(*stash);
+            *stash = ft_strdup(tail->data + index + 1);
+        }
+        else
+        {
+            if (*stash)
+            {
+                free(*stash);
+                *stash = NULL;
+            }
+        }
+    }
+	return (line);
+}
+
+static char	*read_loop(int fd, t_list **head, t_list **tail, char **stash)
+{
+	char	*buff;
+	ssize_t	state;
+	ssize_t	index;
+
+	state = 1;
+	buff = malloc(BUFFER_SIZE + 1);
+	if (!buff)
+		return (NULL);
+	index = find_nl((*tail)->data);
+	while (index == -1 && state > 0)
+	{
+		state = read(fd, buff, BUFFER_SIZE);
+		if (state <= 0)
+			break ;
+		buff[state] = '\0';
+		if (!lstaddback(head, tail, buff, state))
+		{
+			free(buff);
+			return (NULL);
+		}
+		index = find_nl((*tail)->data);
+	}
+	free(buff);
+	if (state < 0)
+    {
+        if (*stash)
+        {
+            free(*stash);
+            *stash = NULL;
+        }
+        return (NULL);
+    }
+	return (lst_str(index, stash, *head, *tail));
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*stash;
+	t_list		*head;
+	t_list		*tail;
+	char		*line;
+
+	head = NULL;
+	tail = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (stash)
+    {
+        if (!lstaddback(&head, &tail, stash, ft_strlen(stash)))
+        {
+            free(stash);
+            stash = NULL;
+            return (NULL);
+        }
+        free(stash);
+        stash = NULL;
+    }
+    else
+    {
+	        if (!lstaddback(&head, &tail, "", 0))
+            return (NULL);
+    }
+    line = read_loop(fd, &head, &tail, &stash);
+    lst_clear(head);
+	return (line);
+}
